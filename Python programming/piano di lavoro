@@ -1,0 +1,64 @@
+Scrivere un programma Python `tail.py` che accetta due argomenti da linea di comando: 
+`tail.py <stringa> <carattere>|<indice>` e stampa l'ultima parte della stringa a partire 
+dall'ultima occorrenza del carattere ovvero a partire dall'indice specificato, anche negativo. 
+Il programma dovrà effettuare il controllo di consistenza degli argomenti come tipo e numero e 
+fornire un messaggio di utilizzo corretto in caso di errore nel passaggio degli argomenti ovvero 
+di carattere non presente o indice fuori dal range della stringa. Si definisca una funzione 
+`lastIndexOf` che ritorna ***l'ultima*** occorrenza di un carattere in una stringa e si richiami 
+questa funzione dal programma principale
+
+
+
+Es. python tail.py pippo p --> po
+Es. python tail.py pippo 1 --> ippo
+Es. python tail.py pippo f --> 'carattere non presente'
+Es. python tail.py pippo 8 --> 'indice fuori dal range'
+Es. python tail.py pippo -2 --> po
+Es. python tail.py pippo -8 --> 'indice fuori dal range'
+Es. python tail.py pippo --> 'Argomenti non corretti: usare la sintassi tail.py <stringa> <carattere>|<indice>'
+Es. python tail.py pippo pluto --> 'Argomenti non corretti: usare la sintassi tail.py <stringa> <carattere>|<indice>'
+
+Pseudocodice versione 1
+
+1.      Acquisire gli argomenti da linea di comando
+2.      Verificare la coerenza degli argomenti
+3.      Se gli argomenti sono coerenti
+3.1     Verificare se il secondo argomento sia un numero o un carattere
+3.2         Se il secondo argomento è un numero
+3.2.1           Stampare la sottostringa a partire dal carattere corrispondente al numero di posizione
+                e mostrare un messaggio di errore ove l'indice sia fuori dal range
+3.3         Altrimenti
+3.3.1           Calcolare l'indice del carattere tramite lastIndexOf
+3.3.2           Stampare la sottostringa a partire dall'indice ritrovato
+                e mostrare un messaggio di errore ove il carattere non sia presente
+
+
+Pseudocodice versione 2
+
+1.      Acquisire gli argomenti da linea di comando
+2.1     Se gli argomenti non sono due
+2.1.1       stampare un messaggio di errore con l'uso corretto del programma e uscire
+2.2     Se il primo argomento non è una stringa
+2.2.1       stampare un messaggio di errore con l'uso corretto del programma e uscire
+2.3     Se il secondo argomento non è un numero ovvero non è un carattere
+2.3.1       stampare un messaggio di errore con l'uso corretto del programma e uscire
+3.      Altrimenti
+3.1         Se il secondo argomento è un numero 
+3.1.1           Se l'indice ricade nel range corretto
+3.1.1.1             Stampare la sottostringa a partire dal carattere corrispondente al numero di posizione
+3.1.2           Altrimenti mostrare un messaggio di errore
+3.2         Altrimenti se il secondo argomento è un carattere
+3.2.1           Calcolare l'indice del carattere tramite lastIndexOf
+3.2.2           Se il carattere è presente nella stringa
+3.2.2.1             Stampare la sottostringa a partire dall'indice ritrovato
+3.2.3           Altrimenti mostrare un messaggio di errore
+
+Pseudocodice lastIndexOf(stringa, carattere) ver. 1
+
+1.      Calcola indice = prima occorrenza di carattere in stringa invertita
+2.      Se indice è pari al valore per cui il carattere non risulta presente
+2.1         restituisci la segnalazione che il carattere non si trova nella stringa
+3.      Altrimenti
+3.1         restituisci lunghezza di stringa - 1 - indice
+
+
