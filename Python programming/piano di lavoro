@@ -59,6 +59,6 @@ Pseudocodice lastIndexOf(stringa, carattere) ver. 1
 2.      Se indice è pari al valore per cui il carattere non risulta presente
 2.1         restituisci la segnalazione che il carattere non si trova nella stringa
 3.      Altrimenti
-3.1         restituisci lunghezza di stringa - 1 - indice
+3.1         restituisci (lunghezza di stringa - 1) - indice
 
 
