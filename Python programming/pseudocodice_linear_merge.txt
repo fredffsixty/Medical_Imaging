@@ -1,0 +1,79 @@
+Scrivere un programma Pyhton `linear_merge.py` che accetta due liste con lo stesso tipo di elementi 
+da linea di comando: `linear_merge.py <lista1> <lista2> [-r]` e stampa un'unica lista in cui gli 
+elementi ripetuti di ogni lista sono stati rimossi e le due liste risultanti sono state fuse in 
+un'unica lista ordinata e senza elementi ripetuti. Se l'argomento `-r` è presente 
+l'output dovrà essere ordinato in senso inverso. Il programma dovrà effettuare il controllo di 
+consistenza degli argomenti in tipo e numero e fornire un messaggio di utilizzo corretto in caso 
+di errore. Si realizzino due funzioni `removeDuplicates` e `merge` per realizzare rispettivamente 
+la rimozione di duplicati e la fuzione.
+
+python linear_merge.py 1,2,56,33,12 q,r,33,5,awe --> 1,12,2,33,5,56,awe,q,r
+python linear_merge.py 1,2,56,33,12 q,r,33,5,awe -r --> r,q,awe,56,5,33,2,12,1
+python linear_merge.py 1,2,56,33,12 --> errore
+python linear_merge.py 1,2,56,33,12 -r --> errore
+python linear_merge.py pippo pluto --> errore
+
+Pseudocodice linear_merge versione 1
+
+1.      Acquisisci gli argomenti e controlloa il loro tipo e numero
+2.      Se il numero non è corretto o il tipo è errato
+2.1         Stampa un messaggio di errore ed esci
+3.      Altrimenti
+3.1         Ordina la prima lista
+3.2         Ordina la seconda lista
+3.3         Richiama merge sulle due liste
+3.4         Richiama removeDuplicates sulla lista risultato
+3.5         Stampa la lista risultato
+
+
+Pseudocodice merge
+
+
+Algoritmo merge "generalista":
+
+1.  considera due cursori c1 e c2 che punatno ai primi due elementi delle due liste
+2.  Ripeti mentre ci sono elementi da verificare in entrambe le liste
+2.1     Se l'elemento puntato da c1 è minore o uguale di quello puntato da c2
+2.1.1       copia l'elemento puntato da c1 nella lista di uscita
+2.1.2       fai avanzare c1 di una posizione
+2.2     Altrimenti
+2.2.1       copia l'elemento puntato da c2 nella lista di uscita
+2.2.2       fai avanzare c2 di una posizione
+3.  Fine Ripeti
+4.  Se la prima lista ha ancora elementi da verificare
+4.1     Copiali tutti nella lista di uscita
+5.  Altrimenti
+5.1     Copia tutti gli elementi della seconda lista nella lista di uscita
+
+
+            c1
+2   3   5   7   10  12
+
+4   5   9   10  11  14  16
+        c2
+
+2 3 4 5 5
+
+
+Algoritmo merge "Python oriented"
+
+1. Crea una lista ottenuta come concatenazione della lista1 e della lista2
+2. Restituisci la versione ordinata di questa lista
+
+Algoritmo removeDuplicates "generalista" per una lista già ordinata
+
+1.  Considera due cursori c e d che puntano al primo e al secondo elemento della lista
+2.  Ripeti fino a raggiungere il penultimo elemento della lista
+2.1     Se l'elemento puntato da c è minore di quello puntato da d
+2.1.2       aggiorna c e d
+2.2     Altrimenti
+2.2.1       rimuovi dalla lista l'elemento puntato da d
+3.  Fine Ripeti
+4.  Restituisci la lista risultato
+
+            c
+2   3   5   8   9   12  12  13  14
+                d
+
+    c < d ? sì ok vado avanti
+            no rimuovo l'elemento puntato da d
