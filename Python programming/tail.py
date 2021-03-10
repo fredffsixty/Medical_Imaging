@@ -19,7 +19,9 @@ def lastIndexOf(s, c):
 
 def main():
 
-    if len(sys.argv) != 3 or not(sys.argv[2].isdigit() or (sys.argv[2][0]=='-' and sys.argv[2][1::].isdigit())):
+    if len(sys.argv) != 3 or \
+        not(sys.argv[2].isdigit() or (sys.argv[2][0]=='-' and sys.argv[2][1::].isdigit())) and \
+        len(sys.argv[2])!=1:
         print('Argomenti errati\n\nUtilizzo: tail2.py stringa carattere | [-]numero')
         sys.exit()
     elif sys.argv[2].isdigit() or (sys.argv[2][0]=='-' and sys.argv[2][1::].isdigit()):
