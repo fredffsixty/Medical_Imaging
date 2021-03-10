@@ -1,0 +1,19 @@
+total 432
+drwxr-xr-x  18 pirrone  staff   576B Mar 10 19:57 .
+drwxr-xr-x   6 pirrone  staff   192B Jan 26 14:30 ..
+-rw-r--r--@  1 pirrone  staff   6.0K Mar 10 19:57 .DS_Store
+drwxr-xr-x  15 pirrone  staff   480B Mar 10 10:57 .git
+drwxr-xr-x   2 pirrone  staff    64B Mar  2 10:23 .ipynb_checkpoints
+drwxr-xr-x   3 pirrone  staff    96B Mar 10 09:09 .vscode
+-rw-r--r--   1 pirrone  staff    14K Mar  2 09:46 Configurazione dell'ambiente Python.ipynb
+drwxr-xr-x   8 pirrone  staff   256B Mar 10 20:10 Data
+-rw-r--r--   1 pirrone  staff   1.0K Jan 26 14:30 LICENSE
+drwxr-xr-x   4 pirrone  staff   128B Mar  6 15:58 Materiale didattico
+drwxr-xr-x  12 pirrone  staff   384B Mar 10 10:55 Python programming
+-rw-r--r--   1 pirrone  staff    35K Mar  3 10:26 Python programming 1.ipynb
+-rw-r--r--   1 pirrone  staff    20K Mar  3 10:42 Python programming 2.ipynb
+-rw-r--r--   1 pirrone  staff    61K Mar 10 20:09 Python programming 3.ipynb
+-rw-r--r--   1 pirrone  staff    40K Oct 15 18:00 Python programming 4.ipynb
+-rw-r--r--   1 pirrone  staff    21K Oct 19 15:27 Python programming 5.ipynb
+-rw-r--r--   1 pirrone  staff   247B Jan 26 14:30 README.md
+drwxr-xr-x   6 pirrone  staff   192B Mar  2 10:09 pluto
