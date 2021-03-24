@@ -1,0 +1,50 @@
+analysis.py <nome_file> <operatore> [<argomento>]
+
+<operatore> ::= max | min | avg | stddev | plot | stat | corr
+
+Gli argomenti max, min, avg e stddev hanno ovvio significato e richiedono 
+obbligatoriamente il nome del campo cui si applicano.
+
+L'operatore plot, se seguito da un numero n, stampa le prime n righe 
+del file in forma di tabella altrimenti le stampa tutte.
+
+L'operatore stat, se seguito dal nome di un campo, stampa i valori 
+di min, max, avg e stddev per quel campo, altrimenti stampa una tabella 
+che riporta nelle righe i campi e in colonna i valori di min, max, 
+avg e stddev per la riga corrispondente.
+
+Infine, l'operatore corr, rigorosamente senza argomenti, 
+genera una tabella quadrata in cui sia le righe che le colonne 
+sono i campi del file di input e in ogni cella è riportato 
+il valore di correlazione tra il campo in riga e quello in colonna.
+
+
+1.  Acquisisci gli argomenti dalinea di comando
+2.  Se nome_file termina con .csv
+2.1     leggi come csv
+3.  Altrimenti se termina con .json
+3.1     leggi come .json
+4.  Altrimenti segnala errore
+5.  Leggi il file
+6.  Se operatore non è uno tra {max, min, avg, stdev, plot stat, corr}
+6.1     segnala errore
+7.  Altrimenti se operatore appartiene a {max, min, avg, stdev} e argomento 
+    non appartiene all'insieme dei nomi di campo letti dal file
+7.1     segala errore
+8.  Altrimenti se operatore è plot e esiste argomento e argomento non è un numero
+8.1     segnala errore
+9.  Altrimenti se l'operatore è stat e esiste argomento e argomento non è un nome di campo
+9.1     segnala errore
+10.  Altrimenti se operatore è uguale a corr
+10.1     Calcola e stampa la correlazione
+11.  Altrimenti
+11.1     calcola la matrice delle statistiche
+11.2     Se l'operatore appartiene a {max, min, avg, stdev}
+11.2.1      Stampa il valore della matrice indicizzato da operatore e argomento
+11.3     Se l'operatore è plot
+11.3.1      Stampa le righe richieste da argomento
+11.4    Se l'operatore è stat ed esiste argomento
+11.4.1      stampa la riga della matrice indicizzata da argomento
+11.5    altrimenti
+11.5.1      stampa l'intera matrice
+
