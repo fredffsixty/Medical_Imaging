@@ -81,21 +81,29 @@ def plot(data,numlines=None):
     """
     
     # funzione interna che stampa la line del titolo ovvero una liea di dati
-    def print_line(lineno=None, title=False):
+    def print_line(field=None, title=False):
         
         if title:   # linea del titolo: stampa un campo vuoto e poi ogni 
                     # singolo nome di campo in 10 caratteri separati da ' | '
+
+            it = iter(data)         # creo un iteratore sulle chiavi dei dati
+            first_line = next(it)   # per avere la chiave della prima linea e poi lo cancello
+            del it
+
             empty = ''
             print(f'|{empty:^10s}',end='')
-            for field in data['1'].keys():
+            for field in data[first_line].keys():
                 print(f'|{field:^10s}',end='')
-        
-        else:       # linea di dati: nel primo campo viene stampato il numero di linea
-                    # e poi i valori della linea stessa sempre allineati in 10 caratteri separati da ' | '
-            print(f'|{str(lineno):^10s}',end='')
-            for val in data[str(lineno)].values():
+            print('|')
+    
+        elif field != None:        # linea di dati: nel primo campo viene stampato il numero di linea
+                                    # e poi i valori della linea stessa sempre allineati in 10 caratteri separati da ' | '
+            print(f'|{field:^10s}',end='')
+            for val in data[field].values():
                 print(f'|{val:^10f}',end='')
-        print('|')
+            print('|')
+        else:
+            print()
 
     def print_hor_rule(numcol):
 
@@ -112,25 +120,38 @@ def plot(data,numlines=None):
         lines = numlines
     
     #stampa la tabella
-    numcol =  len(data['1'].keys())
+    it = iter(data)         # creo un iteratore sulle chiavi dei dati 
+    first_line = next(it)   # per avere la chiave della prima linea e poi lo cancello
+    del it
+
+    numcol =  len(data[first_line].keys())
 
     print_hor_rule(numcol)
     print_line(title=True)
     print_hor_rule(numcol)
 
-    for i in range(1,lines+1):
-        print_line(i)
-    
+    i = 1
+    for key in data.keys():
+        if i <= lines:
+            print_line(key)
+            i += 1
+        else:
+            break
+
     print_hor_rule(numcol)
-
-
 
 
 def field_values(data,field):
     """
     Estrae i valori nella colonna field di data
     """
-    pass
+    
+    column = []     # contiene la lista dei valori di colonna
+
+    for row in data.values():
+        column.append(row[field])
+    
+    return column
 
 
 def stat(data):
@@ -180,7 +201,7 @@ def main():
                 print(f'{sys.argv[3]}: {stats[sys.argv[3]][sys.argv[2]]}')
             if sys.argv[2] == 'plot':
                 if sys.argv[3]:
-                    plot(mydata,int(sys.argv[3]))
+                    plot(mydata,numlines)
                 else:
                     plot(mydata)
             if sys.argv[2] == 'stat':
