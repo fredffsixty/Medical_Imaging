@@ -24,6 +24,7 @@ import csv
 import json
 import os.path
 import sys
+import math
 import statistics
 
 
@@ -58,9 +59,9 @@ def read_data_file(filename, extension):
         i = 1
 
         for row in reader:
-            # solo per la prima riga crea i set dei nomi dei campi
+            # solo per la prima riga crea la lista dei nomi dei campi
             if i == 1:
-                fieldset=set(row.keys())
+                field_list=list(row.keys())
             
             # crea il dict associato ad ogni riga in base all'estensione
             # nel caso dei file .csv i campi sono stringhe e li riconvertiamo in
@@ -72,7 +73,7 @@ def read_data_file(filename, extension):
             
             i += 1
     
-    return data, fieldset
+    return data, field_list
 
 
 def plot(data,numlines=None):
@@ -124,7 +125,8 @@ def plot(data,numlines=None):
     first_line = next(it)   # per avere la chiave della prima linea e poi lo cancello
     del it
 
-    numcol =  len(data[first_line].keys())
+    # stampo sempre una colonna in più del numero dei campi
+    numcol =  len(data[first_line].keys())+1
 
     print_hor_rule(numcol)
     print_line(title=True)
@@ -154,19 +156,84 @@ def field_values(data,field):
     return column
 
 
-def stat(data):
+def stat(data, fields):
     """
     Calcola la tabella delle statistiche dalla tabella dei dati
+
+    Riceve in ingresso la tabella dei dati e la lista dei nomi di campo
+
+    Restituisce la tabella delle statistiche indicizzata dai nomi di campo
     """
-    pass
+    stats = {}
+
+    for field in fields:
+        field_data = field_values(data, field)
+        stats[field] = {\
+            'max': max(field_data),\
+            'min': min(field_data),\
+            'avg': statistics.mean(field_data),\
+            'stdev': statistics.stdev(field_data)
+            }
+    
+    return stats
 
 
-def corr(data):
+def corr(data, fields):
     """
-    Calcola la tabella delle correlazioni dalla tabella dei dati
-    """
-    pass
+    Calcola la tabella delle correlazioni dalla tabella, per ogni colonna, rapporto tra la covarianza
+    delle due colonne fratto il prodotto delle due rispettive deviazioni standard
 
+    Riceve in ingresso la tabella dei dati e una lista con i nomi di campo
+
+    Restituisce la tabella delle correlazioni indicizzata con i nomi di campo sia in riga sia in colonna
+
+    NOTA BENE: reimplementare usando NumPy
+    """
+    corr = {}
+
+    # strutture dati di appoggio
+    data_values = {}
+    avg_values = {}
+
+    # lunghezza di una colonna di dati
+    size = len(data)
+
+    # estrae le liste dei valori e ne calcola le medie
+    # colonna per colonna
+    for field in fields:
+        field_data = field_values(data, field)
+        data_values[field]=field_data
+        avg_values[field]=statistics.mean(data_values[field])
+    
+
+    # calcola la matrice delle correlazioni
+    for field in fields:
+        corr[field]={}
+
+    for field in fields:
+
+        # La matrice delle correlazioni è simmetrica e quindi calcoliamo solo
+        # la triangolare superiore
+        for other_field in fields[fields.index(field):]:
+            if other_field == field: # la correlazione di una colonna con se' stessa è unitaria
+                corr[field][other_field] = 1.0
+            else:
+                num=0
+                den_sqrt1 = 0
+                den_sqrt2 = 0
+                for i in range(size):
+                    num += (data_values[field][i]-avg_values[field])*\
+                        (data_values[other_field][i]-avg_values[other_field]) # calcola la covarianza
+                    den_sqrt1 += (data_values[field][i]-avg_values[field])**2 # calcola le due varianze
+                    den_sqrt2 += (data_values[other_field][i]-avg_values[other_field])**2
+                
+                # correlazione = covarianza/(prodotto delle deviazioni standard)
+                # calcolata direttamente per i due elementi simmetrici
+                corr[field][other_field] = num/(math.sqrt(den_sqrt1)*math.sqrt(den_sqrt2))
+                corr[other_field][field] = corr[field][other_field]
+    
+    return corr
+                    
 
 def main():
     try:
@@ -177,35 +244,35 @@ def main():
             if ext != '.json' and ext != '.csv':
                 raise SyntaxError
             else:
-                mydata, fieldset = read_data_file(sys.argv[1], ext)
+                mydata, field_list = read_data_file(sys.argv[1], ext)
                 if sys.argv[2] not in {'max','min','avg','stdev','plot','stat','corr'}:
                     raise SyntaxError
-                elif sys.argv[2] in {'max','min','avg','stdev'} and sys.argv[3] not in fieldset:
+                elif sys.argv[2] in {'max','min','avg','stdev'} and sys.argv[3] not in field_list:
                     raise SyntaxError
-                elif sys.argv[2] == 'plot' and sys.argv[3]:
+                elif sys.argv[2] == 'plot' and len(sys.argv) == 4:
                     try:
                         numlines = int(sys.argv[3])
                     except ValueError:
                         raise SyntaxError
-                elif sys.argv[2] == 'stat' and sys.argv[3] and sys.argv[3] not in fieldset:
+                elif sys.argv[2] == 'stat' and len(sys.argv)==4 and sys.argv[3] not in set(field_list):
                     raise SyntaxError
     except SyntaxError:
         print("Utilizzo: analysis.py <nome_file> <operatore> [<argomento>]")
     else:
         if sys.argv[2] == 'corr':
-            correlations = corr(mydata)
+            correlations = corr(mydata, field_list)
             plot(correlations)
         else:
-            stats = stat(mydata)
+            stats = stat(mydata,field_list)
             if sys.argv[2] in {'max','min','avg','stdev'}:
                 print(f'{sys.argv[3]}: {stats[sys.argv[3]][sys.argv[2]]}')
             if sys.argv[2] == 'plot':
-                if sys.argv[3]:
+                if len(sys.argv) == 4:
                     plot(mydata,numlines)
                 else:
                     plot(mydata)
             if sys.argv[2] == 'stat':
-                if sys.argv[3]:
+                if len(sys.argv) == 4:
                     plot({sys.argv[3]:stats[sys.argv[3]]})
                 else:
                     plot(stats)
