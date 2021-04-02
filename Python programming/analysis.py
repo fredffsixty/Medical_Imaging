@@ -31,14 +31,14 @@ import statistics
 def read_data_file(filename, extension):
     """
     read_data_file restituisce una dict di dict contenente
-    le righe del file riferito da filename e il set dei nomi di campo
+    le righe del file riferito da filename e la lista dei nomi di campo
 
     Es. {'1': {'campo_1': #, 'campo_2': #, ..., 'campo_n': #},
          '2': {'campo_1': #, 'campo_2': #, ..., 'campo_n': #},
          ....
          'M': {'campo_1': #, 'campo_2': #, ..., 'campo_n': #}}
 
-         {'campo_1', 'campo_2', ... , 'campo_n'}
+         ['campo_1', 'campo_2', ... , 'campo_n']
     """
     csv.register_dialect('myDialect',
                         delimiter = ',',       # nuovo delimitatore
