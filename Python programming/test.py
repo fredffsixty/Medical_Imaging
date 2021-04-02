@@ -4,9 +4,11 @@ sys.path.extend(['/Users/pirrone/src/github repositories/Medical_Imaging/Python 
 from table import Table
 
 def main():
-    tt=Table([[1,True,'Pippo'],[5,True,'Pluto'],[-3,False,'Topolino']],cols=['Qty','Check','Name'],\
-      rows=['1st Q','2nd Q','3rd Q'])
-    tt.plot()
+    tt=Table('../Data/dati.json')
+    print(tt.size, tt.fields)
+    st=tt.sub_table(col_list=['Topolino'])
+    st.plot()
+    print(st.size, st.fields, st.val('2','Topolino'))
 
 if __name__ == '__main__':
   main()
